@@ -1,0 +1,11 @@
+
+Use Below Command on Package Manager Console If DataBase is not Already Created:
+
+1. Add-Migration 'initial' 
+2. Update-Database
+
+--------------------Details to Log In------------------------
+
+ Username: webmaster@admin.com
+
+ Password: 12345

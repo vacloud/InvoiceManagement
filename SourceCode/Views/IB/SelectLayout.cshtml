@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.PageHeader = "Select Layout ";
+}
+
+<div></div>
+<div class="row">
+    
+    <div class="col-md-3 text-center">
+        <form method="post" asp-action="SelectLayout" asp-controller="IB">
+            <input type="hidden" value="1" name="ln" />
+            <img src="~/Layouts/Layout1.png" class="img-fluid img-thumbnail" />
+            <br /> <br />
+            <button type="submit" class="btn btn-outline-info">Layout One</button>
+        </form>
+    </div>
+    <div class="col-md-3 text-center">
+        <form method="post" asp-action="SelectLayout" asp-controller="IB">
+            <input type="hidden" value="2" name="ln" />
+            <img src="~/Layouts/Layout2.png" class="img-fluid img-thumbnail" />
+            <br /> <br />
+            <button type="submit" class="btn btn-outline-warning">Layout Two</button>
+        </form>
+
+    </div>
+    <div class="col-md-3 text-center">
+        <form method="post" asp-action="SelectLayout" asp-controller="IB">
+            <input type="hidden" value="3" name="ln" />
+            <img src="~/Layouts/Layout3.png" class="img-fluid img-thumbnail" />
+            <br /> <br />
+            <button type="submit" class="btn btn-outline-danger">Layout Three</button>
+        </form>
+
+    </div>
+    <div class="col-md-3 text-center">
+        <form method="post" asp-action="SelectLayout" asp-controller="IB">
+            <input type="hidden" value="4" name="ln" />
+            <img src="~/Layouts/Layout4.png" class="img-fluid img-thumbnail" />
+            <br /> <br />
+            <button type="submit" class="btn btn-outline-primary">Layout Four</button>
+        </form>
+
+    </div>
+</div>
+

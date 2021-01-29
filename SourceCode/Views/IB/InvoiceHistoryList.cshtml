@@ -1,0 +1,117 @@
+﻿@using X.PagedList.Mvc.Core; @*import this so we get HTML Helper*@
+@using X.PagedList; @*import this so we can cast our list to IPagedList *@
+@using X.PagedList.Mvc.Common; @*import this for PagedListRenderOptions *@
+
+@inject IHttpContextAccessor _httpContextAccessor;
+
+@using Microsoft.AspNetCore.Http;
+
+
+@inject ICustomerService _CustomerService;
+
+@model InvoiceHistoryVM
+@{
+    ViewBag.PageHeader = "Invoice History Manager";
+}
+
+<div class="row ih">
+    <div class="col-md-12">
+        <span class="text-danger"> @ViewBag.MsgShow</span>
+    </div>
+    <div class="col-md-12">
+        @if (Model.InvoiceHistoryList != null && Model.InvoiceHistoryList.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Customer</th>
+                            <th scope="col">Invoice No</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.InvoiceHistoryList)
+                        {
+                            <tr>
+                                <td>
+                                    ID: @item.ID |
+                                    <form asp-action="ChangeStatusOfInvoice" asp-controller="IB" asp-antiforgery="true" method="post">
+                                        <input type="hidden" name="Id" value="@item.ID" />
+                                        <input type="hidden" name="page" value="@Model.InvoiceHistoryList.PageNumber" />
+                                        <input type="submit" value="@item.Status" onclick="return confirm('Are you sure, you want to change status ?');" class="@(item.Status.ToLower() == "due"?"btn btn-danger btn-sm":"btn btn-success btn-sm") btn-set" />
+                                    </form> |
+                                    <form asp-action="DeleteInvoice" asp-controller="IB" asp-antiforgery="true" method="post">
+                                        <input type="hidden" name="page" value="@Model.InvoiceHistoryList.PageNumber" />
+                                        <input type="hidden" name="Id" value="@item.ID" />
+                                        <input type="submit" value="Delete" onclick="return confirm('Are you sure, you want to delete ?');" class="btn btn-link btn-sm" />
+                                    </form> <br />
+                                    <span style="font-size:13px;">
+                                        Created : @item.CreatedDate
+                                        <br />
+                                        Url:
+
+                                        <a target="_blank" asp-action="public" asp-controller="." asp-route-id="@item.ShareableID">@_httpContextAccessor.HttpContext.Request.Host/public/@item.ShareableID</a>
+                                    </span>
+                                </td>
+                                <td>
+                                    @{
+                                        int CustID = item.CustomerID;
+                                        var CustomerData = _CustomerService.GetCustomerByID(CustID);
+                                        <h6 style="font-weight:700;">@CustomerData.Name| @CustomerData.Address </h6>
+                                        <h6>E: @CustomerData.Email | P: @CustomerData.Phone </h6>
+
+                                    }
+                                    <span style="font-size:13px;">
+                                        Total :  @item.TotalWithoutTax | Taxes :  @item.TotalTaxes | G. Total :  @item.TotalWithTaxes
+                                    </span>
+                                </td>
+
+                                <td>@item.InvoiceNo</td>
+
+
+                                <td>
+                                    <a asp-controller="IB" target="_blank" asp-action="SingleInvoice" asp-route-Id="@item.ID" class="btn btn-primary btn-sm btn-set"> Print  </a>
+                                    <form asp-action="EmailInvoiceToClientWithsharedLink" asp-controller="IB" asp-antiforgery="true" method="post">
+                                        <input type="hidden" name="Id" value="@item.ID" />
+                                        <input type="hidden" name="page" value="@Model.InvoiceHistoryList.PageNumber" />
+                                        <input type="submit" value="Email" onclick="return confirm('Are you sure, you want to send email to client ?');" class="btn btn-warning btn-sm btn-set" />
+                                    </form>
+                                    <a asp-controller="IB" target="_blank" asp-action="SingleInvoice" asp-route-Id="@item.ID" class="btn btn-info btn-sm btn-set">  Download </a>
+
+                                </td>
+
+                            </tr>
+
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+
+        }
+        else
+        {
+            <div class="alert alert-info">
+                No Data is found.
+            </div>
+
+        }
+        @if (Model.InvoiceHistoryList != null && Model.InvoiceHistoryList.PageCount > 1)
+        {
+            <hr />
+            @Html.PagedListPager(Model.InvoiceHistoryList, page => Url.Action("CurrencyMaster", "Webmaster", new { page }),
+                    new PagedListRenderOptions
+                    {
+                        LinkToFirstPageFormat = "First",
+                        LinkToPreviousPageFormat = "Previous",
+                        LinkToNextPageFormat = "Next",
+                        LinkToLastPageFormat = "Last",
+                        MaximumPageNumbersToDisplay = 3
+                    }
+                   )
+        }
+    </div>
+</div>

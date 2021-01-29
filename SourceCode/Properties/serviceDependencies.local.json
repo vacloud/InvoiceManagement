@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "mssql1": {
+      "type": "mssql.onprem",
+      "connectionId": "constring",
+      "secretStore": "LocalSecretsFile"
+    },
+    "appInsights1": {
+      "type": "appInsights.sdk"
+    }
+  }
+}

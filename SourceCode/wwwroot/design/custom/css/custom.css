@@ -1,0 +1,73 @@
+﻿
+
+.validation-summary-errors ul li {
+    color: red;
+}
+
+/*.validation-summary-errors ul li {
+   list-style:none;
+}*/
+
+td form {
+    display: inline !important;
+}
+
+.bg-gradient-primary {
+    background-color: #474747;
+    background-image: none;
+    background-size: cover;
+}
+.outer-invoice {
+    background-color: #ecfdff;
+    border: 1px solid #e8e8e8;
+    padding: 20px;
+    margin: 20px;
+    color: black;
+}
+
+    .outer-invoice .bolder-bottom {
+        font-weight: 700;
+    }
+
+.outer-invoice small {
+    font-size: 12px;
+}
+
+    .outer-invoice .logo-display {
+        width: 175px;
+        height: 80px;
+    }
+
+    .outer-invoice .product-quantity {
+        max-width: 80px;
+    }
+
+    .outer-invoice .product-ddl {
+        min-width: 300px;
+    }
+
+    .outer-invoice .input-auto {
+        border: none;
+        background: none;
+        outline: none;
+        max-width: 160px;
+    }
+
+    .outer-invoice .table .thead-light th {
+        color: black;
+        background-color: #9cc8ff;
+        border-color: #dddfeb;
+    }
+    .outer-invoice .pad-set {
+        padding-bottom: 40px;
+    }
+
+.btn-set {
+    padding: 0px 4px;
+    font-size: 12px;
+}
+
+.ih form {
+    display: inline;
+}
+

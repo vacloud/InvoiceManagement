@@ -1,0 +1,106 @@
+﻿@using X.PagedList.Mvc.Core; @*import this so we get HTML Helper*@
+@using X.PagedList; @*import this so we can cast our list to IPagedList *@
+@using X.PagedList.Mvc.Common; @*import this for PagedListRenderOptions *@
+
+@using Microsoft.AspNetCore.Http;
+
+@model CurrencyVM
+@{
+    ViewBag.PageHeader = "Currency Manager";
+}
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="CurrencyMaster" asp-route-page="@Model.CurrencyList.PageNumber" asp-controller="WebMaster" asp-antiforgery="true">
+                    <span class="text-danger"> @ViewBag.MsgShow</span>
+                    <div asp-validation-summary="All"></div>
+                    <div class="form-group">
+
+                        <label> Currency Name </label>
+
+                        <input type="hidden" asp-for="Currency.ID" />
+
+                        <input type="text" asp-for="Currency.Symbol" class="form-control" />
+
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Add/Update Details" class="btn btn-primary" />
+                        <a asp-action="CurrencyMaster" asp-route-ID="" asp-controller="WebMaster" class="btn btn-danger">Cancel</a>
+
+                    </div>
+                </form>
+
+            </div>
+            <div class="col-md-8">
+                @if (Model.CurrencyList != null && Model.CurrencyList.Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Currency Code | Symbol</th>
+                                    <th scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CurrencyList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.ID
+                                        </td>
+                                        <td>
+                                            @item.Symbol
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-success btn-sm" asp-action="CurrencyMaster" asp-controller="WebMaster" asp-route-ID="@item.ID" asp-route-page="@Model.CurrencyList.PageNumber">Edit</a>
+
+                                            <form asp-action="CurrencyMasterDelete" asp-controller="WebMaster" asp-antiforgery="true" method="post">
+                                                <input type="hidden" name="ID" value="@item.ID" />
+                                                <input type="hidden" name="page" value="@Model.CurrencyList.PageNumber" />
+                                                <input type="submit" value="Delete" onclick="return confirm('Are you sure, you want to delete this data ?');" class="btn btn-danger btn-sm" />
+                                            </form>
+
+
+                                        </td>
+                                    </tr>
+
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        No Data is found.
+                    </div>
+
+                }
+                @if (Model.CurrencyList != null && Model.CurrencyList.PageCount > 1)
+                {
+                    <hr />
+                    @Html.PagedListPager(Model.CurrencyList, page => Url.Action("CurrencyMaster", "Webmaster", new { page }),
+                       new PagedListRenderOptions
+                       {
+                           LinkToFirstPageFormat = "First",
+                           LinkToPreviousPageFormat = "Previous",
+                           LinkToNextPageFormat = "Next",
+                           LinkToLastPageFormat = "Last",
+                           MaximumPageNumbersToDisplay = 3
+                       }
+                      )
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+

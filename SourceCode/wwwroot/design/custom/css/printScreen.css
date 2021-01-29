@@ -1,0 +1,70 @@
+﻿.table .thead-light th {
+    color: black;
+    background-color: #9cc8ff;
+    border-color: #dddfeb;
+}
+
+.outer-invoice {
+    background-color: #ecfdff;
+    border: 1px solid #e8e8e8;
+    padding: 20px;
+    color: black;
+}
+
+.bolder-bottom {
+    font-weight: 700;
+}
+
+small {
+    font-size: 12px;
+}
+
+.logo-display {
+    width: 175px;
+    height: 80px;
+}
+
+.product-quantity {
+    max-width: 80px;
+}
+
+.btn-set {
+    padding: 0px 4px;
+    font-size: 12px;
+}
+
+.div-set {
+    margin: 15px;
+}
+
+.set-sts {
+    font-weight: 900;
+    font-size: 25px;
+    border: 1px dashed #dbdbdb;
+    padding: 5px 15px 5px 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+.pas-set-btm {
+    padding-bottom: 40px;
+}
+.spcfc-nts {
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    font-size: 13px;
+}
+.set-trms {
+    line-height: 13px;
+    font-size: 14px;
+    padding-top: 40px;
+}
+@media print {
+    .hide-items {
+        display: none;
+    }
+
+    @page {
+        size: auto;
+        margin: 0;
+    }
+}

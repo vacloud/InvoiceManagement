@@ -1,0 +1,123 @@
+﻿@model GeneralSettings
+
+@{
+    ViewBag.PageHeader = "General Settings";
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            <form enctype="multipart/form-data" method="post" asp-action="GeneralSettings" asp-controller="Webmaster" asp-antiforgery="true">
+                <span class="text-danger"> @ViewBag.MsgShow</span>
+                <div asp-validation-summary="All"></div>
+                <input type="hidden" asp-for="GeneralModel.ID" class="form-control" />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label> Company Name</label>
+                            <input type="text" asp-for="GeneralModel.Name" class="form-control" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> Compnay Phone </label>
+                            <input type="text" asp-for="GeneralModel.Phone" class="form-control" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> Compnay Email </label>
+                            <input type="email" asp-for="GeneralModel.Email" class="form-control" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> Compnay Website </label>
+                            <input type="text" asp-for="GeneralModel.Website" class="form-control" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> Compnay Address</label>
+                            <input type="text" asp-for="GeneralModel.Address" class="form-control" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label> Invoice Header</label>
+                            <input type="text" asp-for="GeneralModel.InvoiceHeader" class="form-control" />
+
+                        </div>
+                        <div class="form-group">
+                            <label> Invoice SubHeader</label>
+                            <input type="text" asp-for="GeneralModel.InvoiceSubHeader" class="form-control" />
+
+                        </div>
+                        <div class="form-group">
+                            <label> Invoice Footer</label>
+                            <input type="text" asp-for="GeneralModel.InvoiceFooter" class="form-control" />
+
+                        </div>
+                        <div class="form-group">
+                            <label> Terms & Conditions</label>
+                            <textarea rows="8" asp-for="GeneralModel.Terms" class="form-control summernote"></textarea>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> Invoice Prefix</label>
+                            <input type="text" asp-for="GeneralModel.InvoicePrefix" class="form-control" />
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> Default Currency</label>
+                            <select asp-for="GeneralModel.CurrencyID" class="form-control" asp-items="Model.CurrencyList"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> Taxes (in percentage) </label>
+                            <input type="text" asp-for="GeneralModel.Taxes" class="form-control" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> Page Size</label>
+                            <input type="text" asp-for="GeneralModel.PageSize" class="form-control" />
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Update Logo (Width:175px & Height: 80px)</label>
+                            <br />
+                            <img asp-append-version="true" src="@Model.GeneralModel.LogoUrl" class="logo-img-set" />
+                            <br />
+                            <input type="file" asp-for="LogoImage" class="form-control " />
+                            <br />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="submit" value="Update Details" class="btn btn-primary" />
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+

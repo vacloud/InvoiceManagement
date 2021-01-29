@@ -1,0 +1,241 @@
+﻿@inject ICurrencyService _CurrencyService;
+@inject ICustomerService _CustomerService;
+@inject IProductService _ProductService;
+@model SingleInvoiceVM
+@{
+    ViewBag.PageHeader = "";
+    string CurrenySymbol = _CurrencyService.GetCurrencyByID(Model.GS.CurrencyID).Symbol;
+    var CustomerData = _CustomerService.GetCustomerByID(Model.InvoiceHistory.CustomerID);
+Layout=null;
+}
+<script src="~/design/custom/js/jquery-3.4.1.min.js"></script>
+<link href="~/design/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/design/custom/css/printScreen.css" rel="stylesheet" />
+<div class="container-fluid" id="printOuter">
+    <div class="row hide-items div-set">
+        <div class="col-md-12  text-center">
+            <a href="#" class="btn btn-danger printIvoiceBtn btn-set">Print / Download </a> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12  col-sm-12 col-xs-12">
+            <div class="outer-invoice">
+                <div class="row">
+                    <div class="col-md-6  col-sm-6 col-xs-6" style="font-size:13px;">
+
+                        No. #  <span style="font-weight:bold">@Model.InvoiceHistory.InvoiceNo</span>
+                    </div>
+                    <div class="col-md-6  col-sm-6 col-xs-6 text-right">
+                        <span class="set-sts">
+                            <span class="@(Model.InvoiceHistory.Status.ToLower()=="due"?"text-danger":"text-success")">@Model.InvoiceHistory.Status</span>
+                        </span>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 text-center pas-set-btm " >
+                        <span style="font-size:20px;"> @Model.GS.InvoiceHeader </span><br />
+                        <span style="font-size:16px;"> @Model.GS.InvoiceSubHeader </span><br />
+                    </div>
+
+                </div>
+                <div class="row pas-set-btm " >
+                    <div class="col-md-7 col-sm-7 col-xs-7">
+
+                        @{
+                            if (Model.InvoiceHistory.LayoutName.ToString() == "1" || Model.InvoiceHistory.LayoutName.ToString() == "2")
+                            {
+                                if (!string.IsNullOrWhiteSpace(Model.GS.LogoUrl))
+                                {
+                                    <img src="@Model.GS.LogoUrl" class="logo-display" />
+                                }
+                            }
+
+                        }
+
+
+
+                    </div>
+                    <div class="col-md-5 col-sm-5 col-xs-5 text-right" style="font-size:14px;">
+
+                        @{
+                            <span>
+                                Invoice Date :  @Model.InvoiceHistory.InvoiceDate.ToShortDateString()
+                            </span> <br />
+                            <span>
+                                Due On : @Model.InvoiceHistory.InvoiceDueDate.ToShortDateString()
+                            </span>
+
+                        }
+
+                    </div>
+                </div>
+                @{
+                    if (Model.InvoiceHistory.LayoutName.ToLower() == "1" || Model.InvoiceHistory.LayoutName.ToLower() == "3")
+                    {
+                        <div class="row pas-set-btm " >
+
+                            <div class="col-md-6  col-sm-6 col-xs-6">
+                                <span>From</span><br />
+                                <span style="font-weight:bold"> @Model.GS.Name </span> <br />
+                                <span> @Model.GS.Address </span><br />
+                                <span> Email:  @Model.GS.Email </span><br />
+                                <span>Ph:  @Model.GS.Phone </span><br />
+                                <span> @Model.GS.Website </span><br />
+                            </div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <span>To</span><br />
+                                @{
+                                    <span style="font-weight:bold" id="CustName"> @CustomerData.Name </span><br />
+                                    <span> @CustomerData.Address </span><br />
+                                    <span> @CustomerData.Email  </span><br />
+                                    <span>  @CustomerData.Phone</span><br />
+                                    <span>  @CustomerData.Skype</span><br />
+                                }
+
+                            </div>
+                        </div>
+                    }
+                    if (Model.InvoiceHistory.LayoutName.ToLower() == "2" || Model.InvoiceHistory.LayoutName.ToLower() == "4")
+                    {
+                        <div class="row pas-set-btm " >
+
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <span>To</span><br />
+                                @{
+
+                                    <span style="font-weight:bold" id="CustName"> @CustomerData.Name </span><br />
+                                    <span> @CustomerData.Address </span><br />
+                                    <span> @CustomerData.Email  </span><br />
+                                    <span>  @CustomerData.Phone</span><br />
+                                    <span>  @CustomerData.Skype</span><br />
+                                }
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <span>From</span><br />
+                                <span style="font-weight:bold"> @Model.GS.Name </span> <br />
+                                <span> @Model.GS.Address </span><br />
+                                <span> Email:  @Model.GS.Email </span><br />
+                                <span>Ph:  @Model.GS.Phone </span><br />
+                                <span> w: @Model.GS.Website </span><br />
+                            </div>
+                        </div>
+                    }
+
+                }
+
+                <div class="row" style="border-bottom:1px solid #e2e2e2;">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <table class="table  table-sm" id="ProductDetails">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Sub Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var items in Model.Products)
+                                {
+                                    <tr>
+                                        <td>
+                                            @{
+                                                var Prd = _ProductService.GetProductByID(items.ProdcutID);
+                                                <span style="font-weight:900;"> @Prd.ProductName </span> <br />
+                                                <span> @Prd.Description </span>
+                                            }
+
+                                        </td>
+                                        <td>
+
+                                            @CurrenySymbol  @items.ProductUnitPrice
+                                        </td>
+                                        <td>
+                                            @items.ProdcutUnits
+
+                                        </td>
+                                        <td>
+                                            @CurrenySymbol @items.ProdcutSubTotal
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row spcfc-nts" >
+                    <div class="col-md-5 col-sm-5 col-xs-5" >
+                        @{
+                            if (!string.IsNullOrWhiteSpace(Model.InvoiceHistory.SpecificNotes))
+                            {
+                                <span>Important Notes:</span><br />
+                                @Model.InvoiceHistory.SpecificNotes
+                            }
+                        }
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-xs-7 bolder-bottom">
+                        <div class="row">
+
+                            <div class="col-md-5 col-sm-5 col-xs-5 text-right">
+                                Total :
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-xs-7 text-left">
+                                <small>  @CurrenySymbol </small> @Model.InvoiceHistory.TotalWithoutTax
+
+                            </div>
+                        </div>
+                        @{
+                            if (Convert.ToDecimal(Model.InvoiceHistory.TotalTaxes) > 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-5 col-sm-5 col-xs-5 text-right">
+                                        Taxes :
+                                    </div>
+                                    <div class="col-md-7 col-sm-7 col-xs-7 text-left">
+                                        <small>  @CurrenySymbol </small> @Model.InvoiceHistory.TotalTaxes
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 col-sm-5 col-xs-5 text-right">
+                                        Total <small> (taxes inclusive) : </small>
+                                    </div>
+                                    <div class="col-md-7 col-sm-7 col-xs-7 text-left">
+                                        <small>  @CurrenySymbol </small> @Model.InvoiceHistory.TotalWithTaxes
+
+                                    </div>
+                                </div>
+                            }
+                        }
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 set-trms" >
+                        <span>@Html.Raw(Model.GS.Terms)</span>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 text-center" style=" font-size: 12px;">
+                        <br />
+                        @Html.Raw(Model.GS.InvoiceFooter)
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row hide-items div-set">
+        <div class="col-md-12  text-center">
+            <a href="#" class="btn btn-danger printIvoiceBtn btn-set">Print / Download </a> 
+        </div>
+    </div>
+
+</div>
+<script src="~/design/custom/js/custom.js"></script>
